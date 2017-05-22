@@ -21,6 +21,18 @@ void Polilinea::Swap (Polilinea& aux){
 
 ///////////////////////////////////////////////////// Constructor de copia ////////////////////////////////////////////////////////////////
 
+/*
+	El error se produce aquí, concretamente por el hecho de que en la primera iteración, en la creación
+	intenta copiar un puntero nulo en un puntero que está asignado y provoca que éste pierda su dirección de memoria
+	por el hecho de que es una operación no válida
+	
+	Para comprobarlo compilalo con g++ -g -o bin/prueba -Iinclude src/Clase_Polilinea.cpp src/MainClase_Polilinea.cpp
+	O como se llamen
+	Luego gdb prueba
+	Y dentro break Polilinea::CopiaPuntos
+	Se ve fácil así
+*/
+
 void Polilinea::CopiaPuntos (const Polilinea& aux){
 	for (int i = 0; i < getElementos (); i++)
 		this -> operator[] (i) = aux [i];
