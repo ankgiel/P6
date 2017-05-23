@@ -149,7 +149,12 @@ TERCERA ALTERNATIVA (la más rara pero la considero la mejor de todas por ser ef
             Guarda el último puntero en uno auxiliar
           CopiaValores (último puntero, puntero inicial de la 2 celda)
     
+          Devuelve el *this por referencia
+          
     Sobrecarga del operador []:
+          Si (int es menor que num_elem && > 0)
               Igual que los anteriores
+          Devuelve *this por referencia
          
-
+    Destructor:
+          Igual que los anteriores
