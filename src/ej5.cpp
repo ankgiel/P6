@@ -1,31 +1,20 @@
 //EJ_5.cpp
 #include "ej5.h"
-#include <iostream>
-using namespace std;
+#include "Matriz2D-2.h"
 
-/*
-	Creo que tiene más sentido como dato miembro privado
-	Ayuda a calcular un método de la clase
-	
-	Todo método público debe ser antecedido por un objeto de dicha clase
-*/
-
-int buscaMax(int *valores){
-	int max = valores [0] ;
-	
-	for(int i = 1 ; i < getnumeroValores() ; i++)
-		if (vec [i] > max)
+int buscaMax(int * vec, int num){
+	int max = vec[0] ;
+	for(int i=1 ; i<num ; i++)
+		if (vec[i]>max)
 			max = vec[i] ; 
-	return max ;
+	return max ; 
 }
 
-int numElementos(TValor * valores){
+int numElementos(TipoValor * valores){
 	int num=0; 
 	int i=0;
-	
 	while(valores[i] != '0')
-// Es más eficiente ++num; num++, posdata: es un puto detalle pero dicen que se agradece
-		++num; 
+		num++; 
 	return num ; 
 }
 
@@ -37,77 +26,43 @@ MatrizDispersa::MatrizDispersa(){
 	numeroValores=0;
 }
 
-MatrizDispersa::MatrizDispersa(int* filas, int* columnas, double* numeros){
+MatrizDispersa::MatrizDispersa(int* filas, int* columnas, TipoValor* numeros){
 	numeroValores = numElementos(numeros);
-	nfilas = buscaMax(filas);
-	ncolumnas = buscaMax(columnas);
+	nfilas = buscaMax(filas,numeroValores);
+	ncolumnas = buscaMax(columnas,numeroValores);
 
-// Faltaba esta parte
-// Reserva tantos objetos Valor como números válidos haya
-	
-	this -> valores = new Valor [numeroValores];
+	int f,c ; 
+	TipoValor n ;
 
-// Asigna todos sus valores
-	
-	for (int i = 0; i < numeroValores; i++){
-		this -> valores [i].setValor (filas [i], columnas [i], numero [i]);
-}
+	valores = new Valor [numeroValores] ; 
 
-// Intercambia el contenido de 2 matrices dispersas
-	
-void MatrizDispersa::Swap (MatrizDispersa &aux){
-
-	// Valores auxiliriares	
-
-	int filas = this -> nfilas;
-	int columnas = this -> ncolumnas;
-	int numeroValores = this -> numeroValores;
-	Valor *valores = this -> valores;
-	
-	// Introduce en el objeto implícito los datos miembros auxiliares
-	
-	this -> nfilas = aux.nfilas;
-	this -> ncolumnas = aux.ncolumnas;
-	this -> numeroValores = aux.numeroValores;
-	this -> valores = aux.valores;
-	
-	// Introduce en el objeto enviado los valores de this
-	
-	aux.nfilas = filas;
-	aux.ncolumnas = columnas;
-	aux.numeroValores = numeroValores;
-	aux.valores = valores;
-}
-
-MatrizDispersa& MatrizDispersa::operator= (const MatrizDispersa &matriz){
-	if (this != &matriz){
-		MatrizDispersa aux (matriz);
-		
-		Swap (aux);
+	for(int i=0 ; i<numeroValores ; i++){
+		f=filas[i]; 
+		c=columnas[i];
+		n=numeros[i];
+		valores[i](f,c,n);
 	}
-	
-	return *this;
 }
 
-MatrizDispersa::MatrizDispersa (const MatrizDispersa &matriz){
-	this -> nfilas = matriz.nfilas;
-	this -> ncolumnas = matriz.ncolumnas;
-	this -> numeroValores = matriz.numeroValores;
-	this -> valores = new Valor [numeroValores];
-	
-	CopiaValores (matriz);
+void MatrizDispersa::MuestraValores(){
+	for(int i=0 ; i<numeroValores ; i++)
+		valores[i].mostrar() ; 
 }
 
-// Posible método erróneo
-	
-void MatrizDispersa::CopiaValores (const MatrizDispersa &matriz){
-	for (int i = 0; i < numeroValores; i++)
-	// Al no haber datos miembros que sean punteros, no importa asignar 2 objetos de una misma clase
-	// la asignación se produce campo a campo
-		this -> valores [i] = matriz.valores [i];
+
+Matriz2D_2 MatrizDispersa::CreaMatrizDispersa (){
+	Matriz2D_2 matriz = CreaMatriz2D_2(nfilas,ncolumnas);
+
+	for( int f=0 ; f<nfilas ; f++ ) 
+		for (int c=0 ; c<ncolumnas ; c++ ) 
+			matriz[f][c] = 0 ;
+
+	for(int k=0 ; k<numeroValores ; k++)
+		matriz [valores[k].getfila()] [valores[k].getcolumna()] = valores[k].getvalor(); 
+
+	return matriz ; 
 }
+
+
 	
-ostream& operator<< (ostream& out, const MatrizDispersa &matriz){
-	for (int i = 0; i < matriz.getnumeroValores (); i++)
-		out << "Valor " << i << ": " << valores;
-}
+ 
