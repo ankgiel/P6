@@ -42,9 +42,30 @@ CopiaValores (lista, int (ultima celda lista 1), int (ultima celda lista 2), int
   PRE: ULTIMA CELDA LISTA 1 - PRIMERA CELDA LISTA 1 == ULTIMA CELDA LISTA 2 - PRIMERA CELDA LISTA 2 Y TIENEN QUE SER VALORES
       >= 0 Y MENORES QUE NUMERO DE ELEMENTO DE AMBAS CELDAS
   Recorre celdas hasta primera celda de algunas de las 2
+       Quedarse con dicha dirección de memoria en un puntero
   Recorre celdas hasta la primera celda de la otra
-  Copiar valor de celdas hasta (ultima celda lista 1 - primera ultima celda lista 2)
+       Igual pero en otro puntero
+  Recorrer ambas celdas desde sus respectivos punteros hasta (ultima celda lista 1 - primera ultima celda lista 2)
+      asignar valores de celdas siguientes
   
+ConcatenaListas:
+  Asigna num_elem como la suma de las 2 listas
+  CreaLista
+  Copia valores pasando primera lista desde 0 hasta num_elem primera lista
+  Copia valores pasando la segunda lista desde num_elem primera lista hasta num_elem del objeto implícito
+
+CreaLista:
+  Crea tantas celdas como sea el valor de num_elem
+ 
+ Sobrecarga del operador de asignacion:
+      Igual que siempre (constructor de copia + swap)
+              
+ Swap:
+      Intercambia el puntero de inicio de las listas
+      
+ Sobrecarga del operador [] (borra una celda de la lista):
+               Igual que la segunda alternativa
+               
 SEGUNDA ALTERNATIVA (menor modularización, menor eficiencia):
   
   Constructor por defecto:
@@ -93,3 +114,42 @@ SEGUNDA ALTERNATIVA (menor modularización, menor eficiencia):
       Borra con la celda anterior a borrar la celda a borrar (siguiente)
       Asigna ese siguiente la dirección de memoria del puntero auxiliar que creamos
   
+TERCERA ALTERNATIVA (la más rara pero la considero la mejor de todas por ser eficiente y modularizable):
+    Invariante de la representación (algo que siempre va a pasar):
+       Va a tener una celda de cabecera (una que no tenga valores ni se borre ni nada, la de inicio)
+              
+    Constructor por defecto:
+        Asigna num_elem a 1
+        Crea la celda de cabecera
+    
+    Constructor de copia:
+        Asigna num_elem
+        Crea la celda de cabecera
+        CopiaValores
+        
+    PRE: el primer puntero tiene que ser uno implícito del objeto
+    
+    CopiaValores (pasa como argumento 2 puntero a celda, se copiara el contenido del 2 al primero):
+         // Nos olvidamos de que tenemos que controlar que haya al menos una celda
+         Desde el puntero 1 del objeto implícito hasta que el puntero pasado sea 0
+              Si i == a num_elem
+                aux = CreaNueva (puntero a celda)
+                incrementa num_elem
+              Sino
+                asignar valores
+              
+              asignar puntero aux (el que recorre la lista) a sig
+              
+    Sobrecarga del operador de asignación:
+          Como siempre
+          
+    Sobrecarga del operador + (concatena 2 listas):
+          Asigna num_elem como suma de las 2 listas
+          Recorre hasta el último elemento
+            Guarda el último puntero en uno auxiliar
+          CopiaValores (último puntero, puntero inicial de la 2 celda)
+    
+    Sobrecarga del operador []:
+              Igual que los anteriores
+         
+
